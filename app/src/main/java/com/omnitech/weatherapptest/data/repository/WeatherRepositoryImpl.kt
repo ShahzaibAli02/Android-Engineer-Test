@@ -15,7 +15,7 @@ class WeatherRepositoryImpl(
     {
         return api.getWeatherForecast(
                 city = city,
-                apiKey = apiKey // Replace with your WeatherAPI key
+                apiKey = apiKey 
         )
     }
 }
