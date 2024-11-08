@@ -17,13 +17,32 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'temurin'  # Changed from 'openjdk' to 'temurin'
+          distribution: 'temurin'
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease  # Build the release APK
+        run: ./gradlew assembleRelease
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3  # Use v3 for upload
+        id: upload-apk
+        uses: actions/upload-artifact@v3
         with:
           name: app-release
-          path: app/build/outputs/apk/release/*.apk  # Uploads any APK in the release folder
+          path: app/build/outputs/apk/release/*.apk
+
+      - name: Send APK to Slack
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          payload: |
+            {
+              "channel": "#android-news-reels",  # Replace with your Slack channel
+              "text": "The APK is ready! Here is the download link:",
+              "attachments": [
+                {
+                  "text": "Download APK",
+                  "title": "app-release.apk",
+                  "title_link": "${{ steps.upload-apk.outputs.artifact_url }}"  # Link to the uploaded APK
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # Set up your Slack webhook URL in secrets
