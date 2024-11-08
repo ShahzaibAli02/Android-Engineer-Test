@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'adoptopenjdk'  # Add the distribution input (e.g., 'adoptopenjdk')
+          distribution: 'openjdk'  # Use 'openjdk' instead of 'adoptopenjdk'
 
       - name: Build with Gradle
         run: ./gradlew assembleRelease  # Build the release APK
