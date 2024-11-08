@@ -22,32 +22,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease
 
-      - name: Upload APK
-        id: upload-apk
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release
-          path: app/build/outputs/apk/release/*.apk
-
-      - name: Generate Download Link
-        id: generate-link
+      - name: Upload APK to Slack
         run: |
-          echo "artifact_url=https://github.com/${{ github.repository }}/actions/artifacts/${{ steps.upload-apk.outputs.artifact_id }}" >> $GITHUB_ENV
-
-      - name: Send APK to Slack
-        uses: slackapi/slack-github-action@v1.19.0
-        with:
-          payload: |
-            {
-              "channel": "#android-news-reels",
-              "text": "The APK is ready! Here is the download link:",
-              "attachments": [
-                {
-                  "text": "Download APK",
-                  "title": "app-release.apk",
-                  "title_link": "${{ env.artifact_url }}"
-                }
-              ]
-            }
+          curl -X POST https://slack.com/api/files.upload \
+            -F file=@app/build/outputs/apk/release/app-release-unsigned.apk \
+            -F "channels=#android-news-reels" \
+            -F "initial_comment=The APK is ready!" \
+            -H "Authorization: Bearer $SLACK_WEBHOOK_URL"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
