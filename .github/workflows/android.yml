@@ -34,15 +34,15 @@ jobs:
         with:
           payload: |
             {
-              "channel": "#android-news-reels",  # Replace with your Slack channel
+              "channel": "#android-news-reels",
               "text": "The APK is ready! Here is the download link:",
               "attachments": [
                 {
                   "text": "Download APK",
                   "title": "app-release.apk",
-                  "title_link": "${{ steps.upload-apk.outputs.artifact_url }}"  # Link to the uploaded APK
+                  "title_link": "${{ steps.upload-apk.outputs.artifact_url }}"
                 }
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # Set up your Slack webhook URL in secrets
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
