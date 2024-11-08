@@ -1,0 +1,31 @@
+name: Build and Upload APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Build with Gradle
+        run: ./gradlew assembleRelease  # Build the release APK
+
+      # - name: Rename and Upload APK
+      #   run: ./gradlew renameApk  # This runs the rename task in build.gradle
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk  # Uploads the renamed APK
