@@ -27,7 +27,7 @@ jobs:
           curl -X POST https://slack.com/api/files.upload \
             -F file=@app/build/outputs/apk/release/app-release-unsigned.apk \
             -F "channels=#android-news-reels" \
-            -F "initial_comment=The APK is ready! Here is link" \
+            -F "initial_comment=The APK is ready! " \
             -H "Authorization: Bearer $SLACK_WEBHOOK_URL"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
