@@ -29,6 +29,11 @@ jobs:
           name: app-release
           path: app/build/outputs/apk/release/*.apk
 
+      - name: Generate Download Link
+        id: generate-link
+        run: |
+          echo "artifact_url=https://github.com/${{ github.repository }}/actions/artifacts/${{ steps.upload-apk.outputs.artifact_id }}" >> $GITHUB_ENV
+
       - name: Send APK to Slack
         uses: slackapi/slack-github-action@v1.19.0
         with:
@@ -40,7 +45,7 @@ jobs:
                 {
                   "text": "Download APK",
                   "title": "app-release.apk",
-                  "title_link": "${{ steps.upload-apk.outputs.artifact_url }}"
+                  "title_link": "${{ env.artifact_url }}"
                 }
               ]
             }
